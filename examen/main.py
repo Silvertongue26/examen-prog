@@ -9,7 +9,7 @@ import csv
 def segmento1(name):
     #Se lee el archivo csv
     frame = pd.read_csv(name,',')
-    #Se purga la base para obtener explusivamente los usuarios de sonora y se almacena en otra variable
+    #Se purga la base para obtener exclusivamente los usuarios de sonora y se almacena en otra variable
     frame = frame[frame['ENTIDAD_RES'] == 26].copy()
     #Se mantienen unicamente las columnas necesarias
     frame = frame[['FECHA_SINTOMAS', 'ID_REGISTRO', 'FECHA_DEF']].copy()
@@ -23,7 +23,21 @@ def segmento1(name):
     #Se crea el csv
     final.to_csv('tabla1.csv', index=False)
 
+def segmento2(name):
+    #Se lee el archivo csv
+    frame = pd.read_csv(name,',')
+    #Se purga la base para obtener exclusivamente los usuarios hospitalizados
+    frame = frame[frame['TIPO_PACIENTE'] == 2].copy()
+    #Se genera un data frame con la información por entidad
+    final = pd.DataFrame({
+        "Sonora": [len(frame[frame['ENTIDAD_RES'] == 26])],
+        "Chihuahua": [len(frame[frame['ENTIDAD_RES'] == 8])],
+        "Nuevo León": [len(frame[frame['ENTIDAD_RES'] == 19])],
+        "Puebla": [len(frame[frame['ENTIDAD_RES'] == 21])],
+                          })
 
+    #Se crea el csv
+    final.to_csv('tabla2.csv', index=False)
 
 
 
@@ -39,5 +53,6 @@ def segmento1(name):
 
 if __name__ == '__main__':
     segmento1('examen-prog/covid-data/200511COVID19MEXICO.csv')
+    segmento2('examen-prog/covid-data/200511COVID19MEXICO.csv')
 
 
